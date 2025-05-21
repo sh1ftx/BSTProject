@@ -1,6 +1,4 @@
-# BSTProject
-
-# BST - Árvore Binária de Busca
+# BSTProject - Árvore Binária de Busca
 
 Esse projeto é tipo o cérebro das árvores em C++. Tu manda uns números, ele organiza tudo bonitinho pra buscar, tirar, contar folhas, somar e até transformar numa lista massa. Serve pra aprender e treinar com árvore binária, sem frescura.
 
