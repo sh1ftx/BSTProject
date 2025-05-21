@@ -1,54 +1,133 @@
-// $ Ponto de entrada do programa para a Árvore Binária de Busca (BST)
-// $ Utiliza as funções definidas em BST.h e implementadas em BST.cpp
-// $ Responsável por criar a árvore, inserir dados, buscar, imprimir e demonstrar funcionalidades
-// $ Apresenta resultados de forma clara e organizada para o usuário
-// $ Facilita testes e demonstrações das operações da BST
-// $ Parte do projeto de Estrutura de Dados II
-// $ Desenvolvido por Kayki Ivan
-
 #include "include/BST.h"
 #include <iostream>
+#include <sstream>
+#include <vector>
+
+using namespace std;
+
+// Função pra inserir múltiplos valores separados por espaço
+Node *insertMultiple(Node *root) {
+  cout << "Digite os valores para inserir, separados por espaço: ";
+  cin.ignore(); // Limpa o buffer do teclado
+  string line;
+  getline(cin, line);
+  istringstream iss(line);
+  int val;
+  while (iss >> val) {
+    root = insert(root, val);
+    cout << "Inserido: " << val << endl;
+  }
+  return root;
+}
 
 int main() {
   Node *root = nullptr;
+  int choice;
 
-  // Inserção
-  root = insert(root, 10);
-  root = insert(root, 5);
-  root = insert(root, 15);
-  root = insert(root, 3);
-  root = insert(root, 7);
-  using namespace std;
+  do {
+    cout << "\n===== MENU Árvore Binária de Busca (BST) =====\n";
+    cout << "1. Inserir elemento único\n";
+    cout << "2. Inserir múltiplos elementos\n";
+    cout << "3. Imprimir árvore (in-order)\n";
+    cout << "4. Buscar elemento\n";
+    cout << "5. Remover elemento\n";
+    cout << "6. Contar nós folha\n";
+    cout << "7. Calcular soma de todos os nós\n";
+    cout << "8. Mostrar altura da árvore\n";
+    cout << "9. Verificar balanceamento\n";
+    cout << "10. Mostrar caminho entre dois nós\n";
+    cout << "11. Mostrar lista ordenada\n";
+    cout << "0. Sair\n";
+    cout << "Escolha uma opção: ";
+    cin >> choice;
 
-  // Impressão in-order
-  cout << "Inorder: ";
-  inorder(root);
-  cout << "\n";
+    switch (choice) {
+    case 1: {
+      int val;
+      cout << "Digite o valor para inserir: ";
+      cin >> val;
+      root = insert(root, val);
+      cout << "Valor " << val << " inserido com sucesso!\n";
+      break;
+    }
+    case 2:
+      root = insertMultiple(root);
+      break;
 
-  // Buscar
-  Node *found = search(root, 7);
-  cout << "Busca por 7: " << (found ? "Encontrado" : "Não encontrado") << "\n";
+    case 3:
+      cout << "Árvore em ordem (in-order): ";
+      inorder(root);
+      cout << "\n";
+      break;
 
-  // Altura
-  cout << "Altura: " << height(root) << "\n";
+    case 4: {
+      int val;
+      cout << "Digite o valor para buscar: ";
+      cin >> val;
+      if (search(root, val))
+        cout << "Valor " << val << " encontrado na árvore!\n";
+      else
+        cout << "Valor " << val << " não encontrado.\n";
+      break;
+    }
+    case 5: {
+      int val;
+      cout << "Digite o valor para remover: ";
+      cin >> val;
+      root = removeNode(root, val);
+      cout << "Valor " << val << " removido (se estava presente).\n";
+      break;
+    }
+    case 6:
+      cout << "Número de nós folha: " << countLeaves(root) << "\n";
+      break;
 
-  // Soma
-  cout << "Soma dos nós: " << sumNodes(root) << "\n";
+    case 7:
+      cout << "Soma total dos valores dos nós: " << sumNodes(root) << "\n";
+      break;
 
-  // Contagem de folhas
-  cout << "Nós folha: " << countLeaves(root) << "\n";
+    case 8:
+      cout << "Altura da árvore: " << height(root) << "\n";
+      break;
 
-  // Caminho entre dois nós
-  cout << "Caminho entre 3 e 15: ";
-  printPath(root, 3, 15);
+    case 9:
+      if (isBalanced(root))
+        cout << "A árvore está balanceada.\n";
+      else
+        cout << "A árvore NÃO está balanceada.\n";
+      break;
 
-  // Lista ordenada
-  vector<int> lista;
-  toSortedList(root, lista);
-  cout << "Lista ordenada: ";
-  for (int val : lista)
-    cout << val << " ";
-  cout << "\n";
+    case 10: {
+      int start, end;
+      cout << "Digite o nó inicial: ";
+      cin >> start;
+      cout << "Digite o nó final: ";
+      cin >> end;
+      if (!printPath(root, start, end))
+        cout << "Caminho entre " << start << " e " << end
+             << " não encontrado.\n";
+      break;
+    }
+
+    case 11: {
+      vector<int> sortedList;
+      toSortedList(root, sortedList);
+      cout << "Lista ordenada da árvore: ";
+      for (int v : sortedList)
+        cout << v << " ";
+      cout << "\n";
+      break;
+    }
+
+    case 0:
+      cout << "Encerrando o programa. Valeu!\n";
+      break;
+
+    default:
+      cout << "Opção inválida! Tente novamente.\n";
+    }
+
+  } while (choice != 0);
 
   return 0;
 }
